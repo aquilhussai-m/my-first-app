@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>कपड़ों की दुकान</title>
+  <meta name="description" content="साड़ी, सूट, कुर्ता और बच्चों के कपड़े — WhatsApp पर ऑर्डर करें।">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fbf6ef;
+      --surface: #ffffff;
+      --ink: #2a1a14;
+      --muted: #6f5a4e;
+      --line: #eadfd2;
+      --brand: #8c1c2b;      /* मैरून */
+      --brand-ink: #ffffff;
+      --accent: #d98a1c;     /* केसरिया-सुनहरा */
+      --wa: #1f9d55;
+      --wa-ink: #ffffff;
+      --shadow: 0 10px 30px rgba(60, 25, 10, .08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #1a1210; --surface: #251a17; --ink: #f6ece4; --muted: #c4ada0;
+        --line: #3a2b26; --brand: #d9576a; --brand-ink: #1a1210; --accent: #f0a83c;
+        --wa: #2fbf6c; --wa-ink: #0c1a12; --shadow: 0 10px 30px rgba(0,0,0,.35);
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #1a1210; --surface: #251a17; --ink: #f6ece4; --muted: #c4ada0;
+      --line: #3a2b26; --brand: #d9576a; --brand-ink: #1a1210; --accent: #f0a83c;
+      --wa: #2fbf6c; --wa-ink: #0c1a12; --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: "Mukta", system-ui, sans-serif; font-size: 18px; line-height: 1.6;
+    }
+    h1, h2, h3 { font-family: "Tiro Devanagari Hindi", serif; font-weight: 400; line-height: 1.25; margin: 0; }
+    a { color: inherit; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+    /* हेडर */
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+    }
+    .bar { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 12px; }
+    .logo { font-family: "Tiro Devanagari Hindi", serif; font-size: 1.5rem; color: var(--brand); text-decoration: none; white-space: nowrap; }
+    nav { display: flex; gap: 20px; }
+    nav a { text-decoration: none; color: var(--muted); font-weight: 600; }
+    nav a:hover { color: var(--brand); }
+    @media (max-width: 640px) { nav { display: none; } }
+
+    /* बटन */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 0; border-radius: 999px; padding: 12px 22px; cursor: pointer;
+      font: 700 1rem "Mukta", sans-serif; text-decoration: none; transition: transform .15s, filter .15s;
+    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+    .btn-wa { background: var(--wa); color: var(--wa-ink); }
+    .btn-ghost { background: transparent; color: var(--brand); border: 2px solid var(--brand); }
+    .btn svg { width: 20px; height: 20px; flex: none; }
+
+    /* हीरो */
+    .hero { padding: 64px 0 48px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+    .eyebrow { color: var(--accent); font-weight: 700; letter-spacing: .02em; margin-bottom: 10px; }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); }
+    .hero h1 span { color: var(--brand); }
+    .hero p { color: var(--muted); font-size: 1.15rem; max-width: 34ch; margin: 18px 0 28px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-art {
+      aspect-ratio: 4 / 5; border-radius: 28px 28px 200px 28px; box-shadow: var(--shadow);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25) 0 6px, transparent 7px) 0 0 / 34px 34px,
+        repeating-linear-gradient(135deg, #8c1c2b 0 22px, #a32a3a 22px 44px);
+      position: relative; overflow: hidden;
+    }
+    .hero-art::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 18%; height: 28px;
+      background: repeating-linear-gradient(90deg, #d98a1c 0 10px, #f2c35a 10px 20px);
+    }
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; padding-top: 36px; }
+      .hero-art { max-height: 280px; aspect-ratio: auto; height: 240px; border-radius: 24px; }
+    }
+
+    /* भरोसा पट्टी */
+    .trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding-bottom: 56px; }
+    .trust div { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; text-align: center; }
+    .trust b { display: block; font-size: 1.05rem; }
+    .trust small { color: var(--muted); }
+    @media (max-width: 760px) { .trust { grid-template-columns: repeat(2, 1fr); } }
+
+    /* सेक्शन */
+    section.block { padding: 48px 0; }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+    .head h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); }
+
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip {
+      border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+      border-radius: 999px; padding: 6px 16px; font: 600 .95rem "Mukta", sans-serif; cursor: pointer;
+    }
+    .chip[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+
+    /* प्रोडक्ट */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+      display: flex; flex-direction: column; box-shadow: var(--shadow);
+    }
+    .swatch { aspect-ratio: 4 / 3; position: relative; }
+    .tag {
+      position: absolute; top: 12px; left: 12px; background: var(--surface); color: var(--ink);
+      font-size: .8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px;
+    }
+    .card-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .card h3 { font-size: 1.25rem; }
+    .price { display: flex; align-items: baseline; gap: 8px; }
+    .price b { font-size: 1.3rem; color: var(--brand); }
+    .price s { color: var(--muted); font-size: .95rem; }
+    .sizes { display: flex; gap: 6px; flex-wrap: wrap; }
+    .size {
+      min-width: 40px; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line);
+      background: transparent; color: var(--ink); font: 600 .85rem "Mukta", sans-serif; cursor: pointer;
+    }
+    .size[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
+    .card .btn { margin-top: auto; width: 100%; }
+
+    /* कपड़े जैसे पैटर्न (फ़ोटो की जगह) */
+    .p1 { background: repeating-linear-gradient(45deg, #8c1c2b 0 14px, #b23a48 14px 28px); }
+    .p2 { background: radial-gradient(circle, #f2c35a 0 4px, transparent 5px) 0 0 / 22px 22px, #1f4e5f; }
+    .p3 { background: linear-gradient(90deg, rgba(255,255,255,.18) 50%, transparent 0) 0 0 / 28px 28px, linear-gradient(rgba(255,255,255,.18) 50%, transparent 0) 0 0 / 28px 28px, #c25b1c; }
+    .p4 { background: repeating-linear-gradient(0deg, #f0e2c8 0 10px, #e2cfa9 10px 12px); }
+    .p5 { background: radial-gradient(circle at 50% 50%, #ffd6e0 0 7px, transparent 8px) 0 0 / 30px 30px, #6b2d5c; }
+    .p6 { background: repeating-linear-gradient(90deg, #2d4a2b 0 18px, #3e6b3a 18px 20px); }
+    .p7 { background: repeating-linear-gradient(-45deg, #f2c35a 0 10px, #e89b2c 10px 20px); }
+    .p8 { background: linear-gradient(135deg, #3b6ea5 25%, transparent 25%) -14px 0 / 28px 28px, linear-gradient(225deg, #3b6ea5 25%, transparent 25%) -14px 0 / 28px 28px, #5b8fc7; }
+
+    /* कैसे ऑर्डर करें */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: s; }
+    .step { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; }
+    .step::before {
+      counter-increment: s; content: counter(s, devanagari);
+      display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #2a1a14; font-weight: 700; font-size: 1.2rem; margin-bottom: 12px;
+    }
+    .step h3 { font-size: 1.2rem; margin-bottom: 4px; }
+    .step p { margin: 0; color: var(--muted); }
+    @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+
+    /* CTA + फ़ुटर */
+    .cta {
+      background: var(--brand); color: var(--brand-ink); border-radius: 28px; padding: 40px 24px;
+      text-align: center; margin: 24px 0 56px;
+    }
+    .cta h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 8px; }
+    .cta p { margin: 0 0 20px; opacity: .9; }
+    footer { border-top: 1px solid var(--line); padding: 24px 0 96px; color: var(--muted); font-size: .95rem; text-align: center; }
+
+    /* तैरता WhatsApp बटन */
+    .float-wa {
+      position: fixed; right: 16px; bottom: 16px; z-index: 20;
+      width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--wa); color: var(--wa-ink); box-shadow: 0 8px 24px rgba(0,0,0,.25);
+    }
+    .float-wa svg { width: 30px; height: 30px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap bar">
+      <a href="#" class="logo" data-shop-name>कपड़ों की दुकान</a>
+      <nav>
+        <a href="#kapde">कपड़े</a>
+        <a href="#order">ऑर्डर कैसे करें</a>
+      </nav>
+      <a class="btn btn-wa" data-wa-general href="#">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">नया कलेक्शन आ गया है</div>
+        <h1>हर मौके के लिए <span>सुंदर कपड़े</span></h1>
+        <p>साड़ी, सूट, कुर्ता और बच्चों के कपड़े — सही दाम में। पसंद करें और सीधे WhatsApp पर ऑर्डर करें।</p>
+        <div class="hero-actions">
+          <a class="btn btn-wa" data-wa-general href="#">WhatsApp पर बात करें</a>
+          <a class="btn btn-ghost" href="#kapde">कपड़े देखें</a>
+        </div>
+      </div>
+      <div class="hero-art" role="img" aria-label="कपड़े का डिज़ाइन"></div>
+    </section>
+
+    <div class="trust">
+      <div><b>सही दाम</b><small>बाज़ार से कम</small></div>
+      <div><b>अच्छी क्वालिटी</b><small>हर कपड़ा जाँचा हुआ</small></div>
+      <div><b>आसान ऑर्डर</b><small>सिर्फ़ WhatsApp पर</small></div>
+      <div><b>साइज़ बदलें</b><small>7 दिन में</small></div>
+    </div>
+
+    <section class="block" id="kapde">
+      <div class="head">
+        <h2>हमारे कपड़े</h2>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section class="block" id="order">
+      <div class="head"><h2>ऑर्डर कैसे करें</h2></div>
+      <div class="steps">
+        <div class="step"><h3>कपड़ा चुनें</h3><p>ऊपर दी गई लिस्ट में से अपना पसंदीदा कपड़ा और साइज़ चुनें।</p></div>
+        <div class="step"><h3>WhatsApp बटन दबाएँ</h3><p>संदेश अपने आप बन जाएगा — बस “भेजें” दबाएँ।</p></div>
+        <div class="step"><h3>घर पर पाएँ</h3><p>हम आपसे बात करके डिलीवरी या दुकान से लेने का समय तय करेंगे।</p></div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <h2>जो चाहिए वो लिस्ट में नहीं है?</h2>
+      <p>हमें WhatsApp करें — हम आपको और डिज़ाइन की फ़ोटो भेज देंगे।</p>
+      <a class="btn btn-wa" data-wa-general href="#" style="background:#fff;color:#1f9d55">WhatsApp पर संदेश भेजें</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">© <span id="year"></span> <span data-shop-name>कपड़ों की दुकान</span> · सभी अधिकार सुरक्षित</div>
+  </footer>
+
+  <a class="float-wa" data-wa-general href="#" aria-label="WhatsApp पर संदेश भेजें">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2z"/></svg>
+  </a>
+
+  <script>
+    /* ============================================================
+       ✏️  यहाँ अपनी दुकान की जानकारी बदलें
+       ============================================================ */
+    const DUKAN = {
+      naam: "कपड़ों की दुकान",       // दुकान का नाम
+      whatsapp: "919999999999",       // 91 + आपका 10 अंकों का WhatsApp नंबर (बिना + या स्पेस के)
+    };
+
+    // pattern: p1 से p8 तक कोई भी (फ़ोटो की जगह रंगीन डिज़ाइन)
+    const KAPDE = [
+      { naam: "बनारसी सिल्क साड़ी",   shreni: "साड़ी",   daam: 2499, purana: 3200, sizes: ["फ़्री साइज़"], pattern: "p1", tag: "नया" },
+      { naam: "कॉटन प्रिंटेड साड़ी",  shreni: "साड़ी",   daam: 899,  purana: 1199, sizes: ["फ़्री साइज़"], pattern: "p2" },
+      { naam: "अनारकली सूट",         shreni: "सूट",     daam: 1599, purana: 2100, sizes: ["S","M","L","XL"], pattern: "p5", tag: "बेस्ट सेलर" },
+      { naam: "कॉटन सलवार सूट",      shreni: "सूट",     daam: 999,  sizes: ["M","L","XL","XXL"], pattern: "p3" },
+      { naam: "पुरुषों का कुर्ता",     shreni: "कुर्ता",   daam: 749,  purana: 999, sizes: ["M","L","XL","XXL"], pattern: "p4" },
+      { naam: "कुर्ता-पायजामा सेट",   shreni: "कुर्ता",   daam: 1299, sizes: ["M","L","XL"], pattern: "p6" },
+      { naam: "बच्चों का लहंगा",      shreni: "बच्चों के", daam: 899,  sizes: ["2-3 साल","4-5 साल","6-7 साल"], pattern: "p7", tag: "नया" },
+      { naam: "बच्चों का कुर्ता सेट",  shreni: "बच्चों के", daam: 599,  sizes: ["2-3 साल","4-5 साल","6-7 साल"], pattern: "p8" },
+    ];
+    /* ============================================================ */
+
+    const waLink = (text) => `https://wa.me/${DUKAN.whatsapp}?text=${encodeURIComponent(text)}`;
+    const rupaye = (n) => "₹" + n.toLocaleString("hi-IN");
+
+    document.title = DUKAN.naam;
+    document.querySelectorAll("[data-shop-name]").forEach(el => el.textContent = DUKAN.naam);
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.querySelectorAll("[data-wa-general]").forEach(a => {
+      a.href = waLink(`नमस्ते ${DUKAN.naam}! मुझे कपड़ों के बारे में जानकारी चाहिए।`);
+      a.target = "_blank"; a.rel = "noopener";
+    });
+
+    const grid = document.getElementById("grid");
+    const chips = document.getElementById("chips");
+    const shreniyan = ["सभी", ...new Set(KAPDE.map(k => k.shreni))];
+    let chuni = "सभी";
+
+    function el(tag, attrs = {}, text) {
+      const e = document.createElement(tag);
+      Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+      if (text != null) e.textContent = text;
+      return e;
+    }
+
+    function renderChips() {
+      chips.replaceChildren(...shreniyan.map(s => {
+        const b = el("button", { class: "chip", type: "button", "aria-pressed": String(s === chuni) }, s);
+        b.onclick = () => { chuni = s; renderChips(); renderGrid(); };
+        return b;
+      }));
+    }
+
+    function renderGrid() {
+      const list = KAPDE.filter(k => chuni === "सभी" || k.shreni === chuni);
+      grid.replaceChildren(...list.map(k => {
+        let size = k.sizes[0];
+        const card = el("article", { class: "card" });
+
+        const sw = el("div", { class: "swatch " + k.pattern, role: "img", "aria-label": k.naam });
+        if (k.tag) sw.append(el("span", { class: "tag" }, k.tag));
+
+        const body = el("div", { class: "card-body" });
+        body.append(el("h3", {}, k.naam));
+
+        const price = el("div", { class: "price" });
+        price.append(el("b", {}, rupaye(k.daam)));
+        if (k.purana) price.append(el("s", {}, rupaye(k.purana)));
+        body.append(price);
+
+        const btn = el("a", { class: "btn btn-wa", target: "_blank", rel: "noopener" }, "WhatsApp पर ऑर्डर करें");
+        const updateLink = () => btn.href = waLink(
+          `नमस्ते ${DUKAN.naam}! मुझे यह ऑर्डर करना है:\n\n• ${k.naam}\n• साइज़: ${size}\n• दाम: ${rupaye(k.daam)}\n\nकृपया उपलब्धता बताएँ।`
+        );
+
+        if (k.sizes.length > 1) {
+          const sizes = el("div", { class: "sizes", role: "group", "aria-label": "साइज़ चुनें" });
+          const btns = k.sizes.map(s => {
+            const b = el("button", { class: "size", type: "button", "aria-pressed": String(s === size) }, s);
+            b.onclick = () => { size = s; btns.forEach(x => x.setAttribute("aria-pressed", String(x === b))); updateLink(); };
+            return b;
+          });
+          sizes.append(...btns);
+          body.append(sizes);
+        }
+
+        updateLink();
+        body.append(btn);
+        card.append(sw, body);
+        return card;
+      }));
+    }
+
+    renderChips();
+    renderGrid();
+  </script>
+</body>
+</html>
