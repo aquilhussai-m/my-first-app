@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1115">
+  <title>Flow Studio</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">🎬 Flow Studio</div>
+    <div class="project-bar">
+      <select id="projectSelect" aria-label="Project चुनें"></select>
+      <button class="icon-btn" data-action="edit-project" title="Project बदलें">✏️</button>
+      <button class="icon-btn" data-action="new-project" title="नया project">➕</button>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="prompt">✨ Prompt</button>
+      <button class="tab" data-tab="shots">🎞️ Shots</button>
+      <button class="tab" data-tab="script">📜 Script</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ TAB 1: PROMPT GENERATOR ============ -->
+    <section id="tab-prompt" class="tab-panel active">
+      <details class="card" id="charLib">
+        <summary>👤 Characters library <span class="count" id="charCount"></span></summary>
+        <label class="check-row"><input type="checkbox" id="showAllChars"> दूसरे projects के भी दिखाओ</label>
+        <div id="charList" class="lib-list"></div>
+        <button class="btn" data-action="new-char">➕ नया character</button>
+      </details>
+
+      <details class="card" id="locLib">
+        <summary>📍 Locations library <span class="count" id="locCount"></span></summary>
+        <label class="check-row"><input type="checkbox" id="showAllLocs"> दूसरे projects की भी दिखाओ</label>
+        <div id="locList" class="lib-list"></div>
+        <button class="btn" data-action="new-loc">➕ नई location</button>
+      </details>
+
+      <div class="card">
+        <h2>✨ Prompt बनाओ</h2>
+
+        <label class="lbl">Characters (एक या ज़्यादा चुनें)</label>
+        <div id="pgChars" class="chip-group"></div>
+
+        <div id="pgGaze"></div>
+
+        <label class="lbl" for="pgLoc">Location</label>
+        <select id="pgLoc"></select>
+
+        <label class="lbl" for="pgCamera">Camera shot</label>
+        <select id="pgCamera"></select>
+        <input id="pgCameraCustom" class="hidden" placeholder="अपना camera shot लिखें (English में)">
+
+        <label class="lbl" for="pgAction">Action (क्या हो रहा है)</label>
+        <textarea id="pgAction" rows="3" placeholder="e.g. @Chinku gently picks up @Mitthu from the grass and holds him close"></textarea>
+
+        <label class="lbl">Hindi dialogue</label>
+        <div id="pgDialogues"></div>
+        <button class="btn small" data-action="add-dialogue">➕ Dialogue लाइन</button>
+
+        <label class="lbl" for="pgMood">Mood / lighting</label>
+        <input id="pgMood" list="moodList" placeholder="e.g. warm golden-hour light, gentle and emotional">
+        <datalist id="moodList">
+          <option value="warm golden-hour sunlight, gentle and emotional">
+          <option value="soft morning light, calm and peaceful">
+          <option value="bright cheerful daylight, playful mood">
+          <option value="moody blue night light with glowing highlights, mysterious">
+          <option value="dramatic rim lighting, tense and exciting">
+          <option value="soft overcast light, sad and quiet mood">
+        </datalist>
+
+        <div class="grid3">
+          <div>
+            <label class="lbl" for="pgStyle">Style</label>
+            <select id="pgStyle"></select>
+          </div>
+          <div>
+            <label class="lbl" for="pgAspect">Aspect</label>
+            <select id="pgAspect">
+              <option value="16:9">16:9</option>
+              <option value="9:16">9:16</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl" for="pgLength">Length</label>
+            <select id="pgLength">
+              <option value="4">4 sec</option>
+              <option value="6">6 sec</option>
+              <option value="8">8 sec</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row-btns">
+          <button class="btn primary big" data-action="build-prompt">⚡ Prompt बनाओ</button>
+          <button class="btn ghost" data-action="clear-draft">🧹 साफ़ करो</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="pgOutCard">
+        <h2>📋 Flow prompt</h2>
+        <textarea id="pgOutput" rows="14"></textarea>
+        <button class="btn primary big" data-action="copy-prompt">📋 Copy</button>
+        <div class="sub-box">
+          <div class="grid2">
+            <div>
+              <label class="lbl" for="pgShotNum">Shot number</label>
+              <input id="pgShotNum" placeholder="1.1" inputmode="decimal">
+            </div>
+            <div>
+              <label class="lbl" for="pgShotDesc">छोटा description</label>
+              <input id="pgShotDesc" placeholder="चिंकू को मिट्ठू मिला">
+            </div>
+          </div>
+          <button class="btn big" data-action="prompt-to-tracker">🎞️ Tracker में जोड़ो</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TAB 2: SHOT TRACKER ============ -->
+    <section id="tab-shots" class="tab-panel">
+      <div class="stats" id="shotStats"></div>
+
+      <div class="card">
+        <div class="row-btns">
+          <button class="btn primary big" data-action="new-shot">➕ नया shot</button>
+        </div>
+        <label class="lbl" for="shotFilter">Filter</label>
+        <select id="shotFilter"></select>
+        <div id="shotList"></div>
+      </div>
+
+      <details class="card" id="trailerBox">
+        <summary>🎬 Trailer order <span class="count" id="trailerCount"></span></summary>
+        <p class="hint">किसी shot पर “🎬 Trailer” दबाकर यहाँ जोड़ें। ↑ ↓ से क्रम बदलें।</p>
+        <ol id="trailerList" class="trailer-list"></ol>
+        <button class="btn" data-action="copy-trailer">📋 Trailer list copy करो</button>
+      </details>
+
+      <details class="card">
+        <summary>💾 Backup (Export / Import)</summary>
+        <p class="hint">पूरा data (सभी projects, characters, locations, shots, scripts) एक JSON file में।</p>
+        <button class="btn big" data-action="export-json">⬇️ JSON Export (download)</button>
+        <button class="btn" data-action="copy-json">📋 JSON copy करो</button>
+        <label class="btn file-btn">⬆️ JSON Import (file)
+          <input type="file" id="importFile" accept="application/json,.json" hidden>
+        </label>
+        <button class="btn" data-action="paste-json">📥 JSON paste करके import</button>
+        <button class="btn danger" data-action="reset-sample">♻️ Sample data वापस लाओ (सब मिटेगा)</button>
+      </details>
+    </section>
+
+    <!-- ============ TAB 3: SCRIPT BUILDER ============ -->
+    <section id="tab-script" class="tab-panel">
+      <div class="card">
+        <h2>📜 कहानी</h2>
+        <textarea id="storyText" rows="8" placeholder="यहाँ अपनी Hindi कहानी paste करें..."></textarea>
+        <button class="btn primary big" data-action="copy-claude">🤖 Claude के लिए request copy करो</button>
+        <p class="hint">Copy करके Claude chat में paste करें। Project के characters और locations की जानकारी अपने-आप साथ जुड़ जाती है।</p>
+      </div>
+
+      <div class="card">
+        <h2>🎬 Scenes <span class="count" id="sceneCount"></span></h2>
+        <div id="sceneList"></div>
+        <button class="btn big" data-action="new-scene">➕ नया scene</button>
+        <button class="btn primary big" data-action="scenes-to-tracker">🎞️ सारे scenes Shot Tracker में भेजो</button>
+        <p class="hint">जो shot number पहले से Tracker में है, वो दोबारा नहीं जुड़ेगा।</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <h3 id="modalTitle"></h3>
+      <div id="modalBody"></div>
+      <div class="modal-actions">
+        <button class="btn danger hidden" id="modalDelete">🗑️ Delete</button>
+        <button class="btn ghost" id="modalCancel">रद्द करो</button>
+        <button class="btn primary" id="modalSave">✅ Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
